@@ -19,7 +19,6 @@ const aboutContent =
 const contactContent =
   "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
 
-
 const app = express();
 
 app.set("view engine", "ejs");
@@ -30,9 +29,11 @@ app.use(express.static("public"));
 // let posts = [];
 
 const db = "postDB";
-// const path = "mongodb://localhost:27017/" + db;
 
-const path = "mongodb://mongo:hoosNj2tSlkjjGp9AWHh@containers-us-west-187.railway.app:7675/"
+const path = process.env.MONGO_URL || "mongodb://localhost:27017/" + db;
+
+console.log(process);
+
 const postSchema = mongoose.Schema({
   title: { type: String, require: true },
   content: { type: String, require: true },
@@ -120,14 +121,18 @@ app.get("/posts/:post", function (req, res) {
       res.redirect("/");
     } else {
       console.log("Successful information recovery.");
-      res.render("post", {_id: post._id, title: post.title, content: post.content });
+      res.render("post", {
+        _id: post._id,
+        title: post.title,
+        content: post.content,
+      });
     }
   });
 });
 
 app.post("/deletePost", function (req, res) {
   const postID = req.body.postID;
-  console.log(postID)
+  console.log(postID);
   Post.deleteOne({ _id: postID }, function (err) {
     if (err) {
       console.log("It coudn't be errase!");
