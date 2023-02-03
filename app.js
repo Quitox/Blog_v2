@@ -30,8 +30,9 @@ app.use(express.static("public"));
 // let posts = [];
 
 const db = "postDB";
-const path = "mongodb://localhost:27017/" + db;
+// const path = "mongodb://localhost:27017/" + db;
 
+const path = "mongodb://mongo:hoosNj2tSlkjjGp9AWHh@containers-us-west-187.railway.app:7675/"
 const postSchema = mongoose.Schema({
   title: { type: String, require: true },
   content: { type: String, require: true },
